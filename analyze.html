@@ -256,7 +256,8 @@
 
   $("#momentPick").innerHTML = OVS.MOMENTS.map(function (m) {
     var st = OVS.styleById(m.style);
-    return '<button class="moment" type="button" data-m="' + m.id + '" aria-pressed="false">' +
+    return '<button class="moment" type="button" data-m="' + m.id +
+      '" aria-pressed="false" aria-label="' + m.ko + " — " + m.line + '">' +
       '<div class="mfig">' + OVS.scene(types[m.id], st, 300, 120, false) + "</div>" +
       '<div class="mb"><div class="men">' + m.en + '</div><h3 class="kh">' + m.ko + "</h3>" +
       '<p>' + m.line + "</p></div></button>";
