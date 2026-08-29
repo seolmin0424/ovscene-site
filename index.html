@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>오브씬 OVSCENE — 테마만 고르세요, 구성은 랜덤입니다</title>
+<meta name="description" content="1인 가구를 위한 취향 기반 리빙 큐레이션. 모던·빈티지·키치·에코·메탈릭 다섯 테마 중 하나만 고르면, 검수를 마친 오브제가 매번 다른 조합으로 도착합니다.">
+<meta name="theme-color" content="#FAF8F5">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="오브씬 OVSCENE">
+<meta property="og:description" content="테마만 고르세요. 안에 들어갈 오브제는 매번 랜덤입니다.">
+<meta property="og:image" content="assets/og.svg">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,300..800&family=Gothic+A1:wght@200;300;400;500;700;900&display=swap">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<a class="skip" href="#top">본문 바로가기</a>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span>Theme first, contents random</span><span>테마만 고르세요 · 구성은 매번 다릅니다</span>
+    <span>Modern · Vintage · Kitsch · Eco · Metallic</span><span>5만원 이상 무료배송</span>
+    <span>Theme first, contents random</span><span>테마만 고르세요 · 구성은 매번 다릅니다</span>
+    <span>Modern · Vintage · Kitsch · Eco · Metallic</span><span>5만원 이상 무료배송</span>
+  </div>
+</div>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top">
+      <svg width="28" height="28" viewBox="0 0 100 100" aria-label="오브씬">
+        <path d="M76.8 70.9 A34 34 0 1 1 76.8 29.1" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+        <circle cx="81" cy="50" r="6.4" fill="var(--amber)"/>
+      </svg>
+      <span class="brand-word">OVSCENE</span>
+    </a>
+    <nav class="menu" aria-label="주요 메뉴">
+      <a href="#roll">Random</a><a href="#themes">Theme</a><a href="#store">Store</a>
+      <a href="#plans">Plan</a><a href="#quality">Quality</a><a href="#faq">FAQ</a>
+    </nav>
+    <div class="nav-r">
+      <button class="iconb" id="themeBtn" aria-label="화면 테마 전환">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="cartb" id="cartBtn">Cart <span class="cnt" id="cartCount">0</span></button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-top">
+      <div>
+        <span class="lbl">Objects for your scene — 1인 생활 오브제 큐레이션</span>
+        <h1 class="ttl" style="margin-top:18px">PICK A<br>THEME.<br><span class="out">NOT ITEMS.</span></h1>
+      </div>
+      <div>
+        <p class="hero-k kh">테마 다섯 개 중 하나만 고르세요.<br>안에 들어갈 오브제는 <span style="color:var(--amber)">매번 랜덤</span>입니다.</p>
+        <p class="hero-p">모던 · 빈티지 · 키치 · 에코 · 메탈릭. 테마별로 수십 종의 오브제 풀이 있고, 방 크기와 이미 가진 물건을 뺀 뒤 그 안에서 무작위로 뽑아 보냅니다.</p>
+        <div class="hero-cta">
+          <a class="btn btn-fill" href="#roll">구성 뽑아보기</a>
+          <a class="btn btn-line" href="#store">팩 둘러보기</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-shelf">
+      <div class="hero-scene" id="heroScene"></div>
+      <div class="wood shelf-plank"></div>
+      <p class="hero-note">위 오브제는 실제 뽑기 결과를 그대로 보여주는 예시입니다. 새로고침할 때마다 달라집니다.</p>
+    </div>
+
+    <div class="stat-row" style="margin-top:34px">
+      <div class="stat"><b>5</b><span>테마 — 모던 · 빈티지 · 키치 · 에코 · 메탈릭</span></div>
+      <div class="stat"><b>210+</b><span>큐레이션 풀에 등록된 오브제</span></div>
+      <div class="stat"><b>4</b><span>한 박스에 담기는 오브제 수 (스탠다드)</span></div>
+      <div class="stat"><b>0</b><span>중복 배송된 조합 — 이력 기준 자동 제외</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== RANDOM ROLLER ===== -->
+<section class="sec" id="roll">
+  <div class="wrap">
+    <div class="sec-hd">
+      <div>
+        <span class="lbl">How it works — 01</span>
+        <h2 class="ttl" style="margin-top:10px">RANDOM BY DESIGN</h2>
+        <p class="kh" style="margin-top:8px;font-size:20px">구성은 매번 다릅니다. 테마는 그대로입니다.</p>
+      </div>
+      <p>같은 테마를 두 번 시켜도 같은 박스는 오지 않습니다. 테마가 톤을 보장하고, 랜덤이 발견을 만듭니다.</p>
+    </div>
+
+    <div class="roll">
+      <div class="roll-side">
+        <h3 class="kh">테마를 고르세요</h3>
+        <p>고르는 건 여기까지입니다.</p>
+        <div class="theme-list" id="themeList"></div>
+      </div>
+      <div class="roll-main">
+        <div class="roll-top">
+          <div>
+            <span class="lbl" id="rollEn">Modern</span>
+            <h3 class="kh" style="font-size:20px;margin-top:4px" id="rollKo">모던</h3>
+          </div>
+          <span class="pool-chip">풀 <b id="poolN">46</b>종 중 <b>4</b>점 무작위 추출</span>
+        </div>
+        <div class="slots" id="slots"></div>
+        <div class="roll-foot">
+          <p class="note">등록하신 방 크기·보유 물건·비선호 품목은 추첨 전에 제외됩니다. 지난 배송과 겹치는 오브제도 자동으로 빠집니다.</p>
+          <div style="display:flex;gap:9px">
+            <button class="btn btn-line" id="rerollBtn">다시 뽑기</button>
+            <button class="btn btn-amber" id="rollAdd">이 테마로 구독</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== THEMES ===== -->
+<section class="sec" id="themes" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-hd">
+      <div>
+        <span class="lbl">How it works — 02</span>
+        <h2 class="ttl" style="margin-top:10px">FIVE THEMES</h2>
+        <p class="kh" style="margin-top:8px;font-size:20px">방의 톤을 정하는 다섯 갈래</p>
+      </div>
+      <p>테마는 색·소재·마감의 규칙입니다. 어떤 팩을 고르든 이 규칙 안에서 뽑힙니다.</p>
+    </div>
+    <div class="themes" id="themeCards"></div>
+  </div>
+</section>
+
+<!-- ===== STORE ===== -->
+<section class="sec" id="store" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-hd">
+      <div>
+        <span class="lbl">Store</span>
+        <h2 class="ttl" style="margin-top:10px">PACKS</h2>
+        <p class="kh" style="margin-top:8px;font-size:20px">구독 없이 한 번만 받아볼 수도 있습니다.</p>
+      </div>
+      <p>모든 팩의 내용물은 선택한 테마 풀에서 무작위로 채워집니다. 카드의 이미지는 실제 뽑기 예시이며, 다시 뽑기 버튼으로 다른 조합을 볼 수 있습니다.</p>
+    </div>
+
+    <div class="store-bar">
+      <div class="tabs" id="tabs"></div>
+      <div class="tsel" id="tsel"><span class="lbl">Theme</span></div>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<!-- ===== PLANS ===== -->
+<section class="sec" id="plans" style="background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-hd">
+      <div>
+        <span class="lbl">Subscription</span>
+        <h2 class="ttl" style="margin-top:10px">MONTHLY</h2>
+        <p class="kh" style="margin-top:8px;font-size:20px">매달 한 번, 방이 조금씩 바뀝니다.</p>
+      </div>
+      <p>테마는 언제든 바꿀 수 있고, 건너뛰기와 해지에 위약금이 없습니다.</p>
+    </div>
+    <div class="plans">
+      <div class="plan">
+        <span class="en">Light</span><h3 class="kh">라이트</h3>
+        <div class="amt">19,900<s>원 / 월</s></div>
+        <ul>
+          <li><em>2</em>점 · 소형 오브제 위주</li>
+          <li>테마 풀에서 무작위 추출</li>
+          <li>플레이리스트 + 배치 카드</li>
+          <li>월 1회 배송</li>
+        </ul>
+        <button class="btn btn-line" data-plan="라이트" data-price="19900">라이트 담기</button>
+      </div>
+      <div class="plan best">
+        <span class="en">Standard — Best</span><h3 class="kh">스탠다드</h3>
+        <div class="amt">39,900<s>원 / 월</s></div>
+        <ul>
+          <li><em>4</em>점 · 필수 / 취향 / 발견 / 디지털</li>
+          <li>비선호 품목 제외 후 추첨</li>
+          <li>방 사진 기반 색감 매칭</li>
+          <li>새 상품 2 · 검수 중고 2</li>
+        </ul>
+        <button class="btn btn-fill" data-plan="스탠다드" data-price="39900">스탠다드 담기</button>
+      </div>
+      <div class="plan">
+        <span class="en">Signature</span><h3 class="kh">시그니처</h3>
+        <div class="amt">69,900<s>원 / 월</s></div>
+        <ul>
+          <li><em>6</em>점 · 중형 오브제 포함</li>
+          <li>한정 · 빈티지 셀렉트 우선 배정</li>
+          <li>1:1 배치 코멘트</li>
+          <li>교환 1회 무료</li>
+        </ul>
+        <button class="btn btn-line" data-plan="시그니처" data-price="69900">시그니처 담기</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== QUALITY ===== -->
+<section class="sec" id="quality">
+  <div class="wrap">
+    <div class="sec-hd">
+      <div>
+        <span class="lbl">Quality</span>
+        <h2 class="ttl" style="margin-top:10px">CHECKED, NOT USED</h2>
+        <p class="kh" style="margin-top:8px;font-size:20px">랜덤이지만 아무거나는 아닙니다.</p>
+      </div>
+      <p>중고·리퍼브가 섞이는 게 불편하다면 ‘새 상품만’ 옵션을 선택할 수 있습니다.</p>
+    </div>
+    <div class="qc">
+      <div class="qcx"><div class="n">01</div><h4>선별</h4><p>브랜드·연식·상태 등급이 확인되는 물건만 풀에 등록합니다.</p></div>
+      <div class="qcx"><div class="n">02</div><h4>세척 · 소독</h4><p>소재별 세척 후 건조, 패브릭은 전문 세탁 처리합니다.</p></div>
+      <div class="qcx"><div class="n">03</div><h4>기능 점검</h4><p>조명·전자 제품은 통전과 연속 점등 테스트를 거칩니다.</p></div>
+      <div class="qcx"><div class="n">04</div><h4>상태 표기</h4><p>스크래치·변색 위치를 카드에 적어 함께 보냅니다.</p></div>
+      <div class="qcx"><div class="n">05</div><h4>교환 보장</h4><p>표기와 다르면 수령 후 7일 내 무료 교환·반품됩니다.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="sec" id="faq" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-hd">
+      <div><span class="lbl">FAQ</span><h2 class="ttl" style="margin-top:10px">QUESTIONS</h2></div>
+    </div>
+    <div class="faq">
+      <details open><summary>정말 무엇이 올지 모르나요?</summary>
+        <p class="ans">테마와 카테고리는 확정이고, 그 안의 개별 오브제만 무작위입니다. 예를 들어 ‘에코 · 조명 팩’을 고르면 조명이 온다는 건 확실하지만, 그게 라탄 갓 램프일지 리넨 셰이드일지는 열어봐야 압니다. 배송 3일 전에 미리보기를 보내드리고, 마음에 안 들면 한 번 다시 뽑을 수 있습니다.</p></details>
+      <details><summary>같은 게 또 오면 어떡하죠?</summary>
+        <p class="ans">지난 배송 이력에 있는 오브제는 추첨 풀에서 자동으로 제외됩니다. 가입할 때 등록한 보유 물건과 비선호 품목도 마찬가지입니다. 추첨은 남은 후보 안에서만 이루어집니다.</p></details>
+      <details><summary>테마를 바꿀 수 있나요?</summary>
+        <p class="ans">매달 결제일 5일 전까지 마이페이지에서 바꿀 수 있습니다. 모던으로 시작해 겨울에 빈티지로 넘어가는 분들이 많습니다.</p></details>
+      <details><summary>중고·리퍼브가 섞여 오나요?</summary>
+        <p class="ans">스탠다드 기준 절반입니다. 전 품목 검수·세척을 거치고 상태 등급을 카드에 적어 보냅니다. ‘새 상품만’ 옵션을 선택하면 가격이 조정된 새 상품 구성으로 받아볼 수 있습니다.</p></details>
+      <details><summary>방 사진은 꼭 보내야 하나요?</summary>
+        <p class="ans">선택 사항입니다. 다만 사진 한 장이 있으면 가구 색감과 조명 색온도를 맞추기 훨씬 정확해집니다. 사진은 큐레이션 목적 외에 사용하지 않습니다.</p></details>
+      <details><summary>가구 팩도 배송되나요?</summary>
+        <p class="ans">스툴·사이드테이블·플로어 조명처럼 1인 가구 방에 들어가는 소형 가구 위주입니다. 수도권은 지정일 배송, 그 외 지역은 택배로 나갑니다.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<div class="wood wood-thin"></div>
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <a class="brand" href="#top" style="margin-bottom:16px">
+          <svg width="26" height="26" viewBox="0 0 100 100" aria-hidden="true">
+            <path d="M76.8 70.9 A34 34 0 1 1 76.8 29.1" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+            <circle cx="81" cy="50" r="6.4" fill="var(--amber)"/>
+          </svg>
+          <span class="brand-word">OVSCENE</span>
+        </a>
+        <p style="font-size:13px;color:var(--text-2);max-width:30ch">필요한 것만 보내지만,<br>평범한 하루는 보내지 않아요.</p>
+      </div>
+      <div><h5>Shop</h5><ul>
+        <li><a href="#store">자취 스타터 팩</a></li><li><a href="#store">가구 팩</a></li>
+        <li><a href="#store">가정용품 팩</a></li><li><a href="#plans">구독 플랜</a></li></ul></div>
+      <div><h5>Theme</h5><ul>
+        <li><a href="#themes">모던 Modern</a></li><li><a href="#themes">빈티지 Vintage</a></li>
+        <li><a href="#themes">키치 Kitsch</a></li><li><a href="#themes">에코 Eco</a></li>
+        <li><a href="#themes">메탈릭 Metallic</a></li></ul></div>
+      <div>
+        <h5>Preview letter</h5>
+        <p style="font-size:12.5px;color:var(--text-2)">매달 첫째 주, 이번 달 풀에 새로 들어온 오브제를 먼저 보여드립니다.</p>
+        <form class="nlf" id="nl"><input type="email" placeholder="이메일 주소" aria-label="이메일 주소" required><button type="submit">Subscribe</button></form>
+        <p id="nlMsg" style="font-size:11.5px;color:var(--amber);margin-top:8px"></p>
+      </div>
+    </div>
+    <div class="fbot">
+      <span>OVSCENE 오브씬 — Objects for your scene</span>
+      <span>브랜드 콘셉트 데모 사이트입니다. 실제 결제는 이루어지지 않습니다.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="장바구니" aria-hidden="true">
+  <div class="dh"><h3>Cart</h3>
+    <button class="iconb" id="closeCart" aria-label="닫기"><svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+  </div>
+  <div class="dbody" id="cartBody"></div>
+  <div class="dfoot">
+    <div class="tot"><span style="font-size:13px">합계</span><span class="tv" id="cartTotal">0원</span></div>
+    <p class="sn">5만원 이상 무료배송 · 모든 팩의 내용물은 테마 풀에서 무작위 추출됩니다</p>
+    <button class="btn btn-fill" id="checkout">Checkout</button>
+  </div>
+</aside>
+<div class="toast" id="toast"></div>
+
+<script src="assets/app.js"></script>
+</body>
+</html>
