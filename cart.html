@@ -105,7 +105,7 @@
     $("#rows").innerHTML = OVS.cart.map(function (c) {
       var it = OVS.byId(c.id);
       return '<div class="crow" data-id="' + c.id + '">' +
-        '<a href="product.html?id=' + c.id + '" class="cfig">' + OVS.scene([c.type], style, 240, 180, true) + "</a>" +
+        '<a href="product.html?id=' + c.id + '" class="cfig">' + OVS.productVisual(it || c) + "</a>" +
         "<div>" +
           '<a href="product.html?id=' + c.id + '"><h3 class="kh">' + c.name + "</h3></a>" +
           '<div class="cmeta">' + c.cat + (it && it.random ? " · 구성 랜덤" : "") + "</div>" +
