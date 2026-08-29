@@ -188,7 +188,7 @@
         ? '<span class="pill"><i></i>구성 랜덤</span>'
         : (OVS.profile && score >= 60 ? '<span class="pill match"><i></i>' + score + "% 매칭</span>" : "");
       return '<article class="pcard"><a href="product.html?id=' + it.id + '" aria-label="' + it.name + ' 상세보기">' +
-        '<div class="pfig">' + OVS.scene([it.type], profStyle, 300, 225, true) + badge + "</div></a>" +
+        '<div class="pfig">' + OVS.productVisual(it) + badge + "</div></a>" +
         '<div class="pb"><div class="cat">' + it.cat + "</div>" +
         '<a href="product.html?id=' + it.id + '"><h3 class="kh">' + it.name + "</h3></a>" +
         '<p class="dsc">' + it.desc + "</p>" +
