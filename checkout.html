@@ -105,6 +105,7 @@
       <h1 class="ttl" style="margin:12px 0 14px">주문이 접수되었습니다</h1>
       <p class="muted" style="max-width:44ch;margin:0 auto">주문번호 <b class="num" id="orderNo"></b><br>
         배송이 시작되면 입력하신 이메일로 알려드립니다.</p>
+      <p class="notice" id="deliveryNote" style="display:none;max-width:520px;margin:24px auto 0;text-align:left"></p>
       <div style="display:flex;gap:10px;justify-content:center;margin-top:34px;flex-wrap:wrap">
         <a class="btn btn-fill btn-lg" href="shop.html">계속 쇼핑하기</a>
         <a class="btn btn-line btn-lg" href="analyze.html">취향 다시 진단하기</a>
@@ -169,6 +170,12 @@
              String(Math.floor(Math.random() * 9000) + 1000);
     $("#orderNo").textContent = no;
 
+    var orderedItems = OVS.cart.slice();
+    OVS.recordPurchased(orderedItems);
+    if (orderedItems.some(function (item) { return item.isPack; })) {
+      $("#deliveryNote").style.display = "block";
+      $("#deliveryNote").textContent = "AI 테마 팩의 구성은 배송 전까지 공개되지 않습니다. 이번 주문의 구성품은 구매 이력에 반영되어 다음 팩에서 자동으로 제외됩니다.";
+    }
     OVS.clearCart();
     $("#formStage").style.display = "none";
     $("#doneStage").style.display = "block";
