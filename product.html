@@ -98,7 +98,7 @@
   host.innerHTML =
     '<div class="pd">' +
       '<div>' +
-        '<div class="pd-fig" id="pdFig">' + OVS.hero1(it.type, style, 600) + "</div>" +
+        '<div class="pd-fig" id="pdFig">' + OVS.productVisual(it) + "</div>" +
         '<div class="pd-thumbs" id="pdThumbs"></div>' +
       "</div>" +
       "<div>" +
@@ -142,12 +142,13 @@
   var thumbStyles = OVS.STYLES.slice(0, 4);
   $("#pdThumbs").innerHTML = thumbStyles.map(function (s, i) {
     return '<button data-s="' + s.id + '" aria-pressed="' + (s.id === style.id) + '" title="' + s.ko + ' 스타일로 보기">' +
-      OVS.scene([it.type], s, 200, 150, true) + "</button>";
+      OVS.productVisual(it) + "</button>";
   }).join("");
   $$("#pdThumbs button").forEach(function (b) {
     b.addEventListener("click", function () {
       var s = OVS.styleById(b.dataset.s);
-      $("#pdFig").innerHTML = OVS.hero1(it.type, s, 600);
+      OVS.setSceneStyle(s.id);
+      $("#pdFig").innerHTML = OVS.productVisual(it);
       $$("#pdThumbs button").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
     });
   });
@@ -179,7 +180,7 @@
     $("#relatedSec").hidden = false;
     $("#related").innerHTML = rel.map(function (r) {
       return '<article class="pcard"><a href="product.html?id=' + r.id + '">' +
-        '<div class="pfig">' + OVS.scene([r.type], style, 300, 225, true) + "</div></a>" +
+        '<div class="pfig">' + OVS.productVisual(r) + "</div></a>" +
         '<div class="pb"><div class="cat">' + r.cat + "</div>" +
         '<a href="product.html?id=' + r.id + '"><h3 class="kh">' + r.name + "</h3></a>" +
         '<p class="dsc">' + r.desc + "</p>" +
