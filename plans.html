@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>이용권 — 오브씬 OVSCENE</title>
+<meta name="description" content="무료 진단, 월 9,900원 개인화 구독, 그리고 필요할 때만 사는 커머스. 정기배송은 없습니다.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,300..800&family=Gothic+A1:wght@200;300;400;500;700;900&display=swap">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<a class="skip" href="#top">본문 바로가기</a>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html">
+      <svg width="28" height="28" viewBox="0 0 100 100" aria-label="오브씬 홈">
+        <path d="M76.8 70.9 A34 34 0 1 1 76.8 29.1" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+        <circle cx="81" cy="50" r="6.4" fill="var(--amber)"/>
+      </svg>
+      <span class="brand-word">OVSCENE</span>
+    </a>
+    <nav class="menu" aria-label="주요 메뉴">
+      <a href="index.html">Home</a>
+      <a href="analyze.html">취향 진단</a>
+      <a href="shop.html">Store</a>
+      <a href="plans.html" aria-current="page">이용권</a>
+    </nav>
+    <div class="nav-r">
+      <button class="iconb" id="themeBtn" aria-label="화면 테마 전환">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" stroke-linejoin="round"/></svg>
+      </button>
+      <a class="cartb" href="cart.html">Cart <span class="cnt" id="cartCount">0</span></a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+<div class="wrap">
+  <nav class="crumb" aria-label="경로"><a href="index.html">Home</a><i>/</i><span>이용권</span></nav>
+
+  <div class="sec-hd" style="margin-bottom:32px">
+    <div>
+      <span class="lbl">Pricing</span>
+      <h1 class="ttl" style="font-size:clamp(28px,3.8vw,46px);margin-top:10px">구독은 서비스,<br>물건은 선택</h1>
+      <p class="kh" style="font-size:19px;margin-top:12px">매달 상자가 오지 않습니다.</p>
+    </div>
+    <p>정기배송을 없앤 이유는 단순합니다. 안 쓰는 물건이 쌓이면 좁은 방에서는 그게 곧 스트레스가 되기 때문입니다. 구독료는 개인화 서비스를 쓰는 값이고, 물건은 필요할 때만 사면 됩니다.</p>
+  </div>
+
+  <div class="plans">
+    <div class="plan">
+      <span class="en">Free</span>
+      <h3 class="kh">무료</h3>
+      <div class="amt">0<s>원</s></div>
+      <p class="role">가입 없이 바로 · 누구나</p>
+      <ul>
+        <li>취향 테스트 6문항</li>
+        <li>기본 공간 분석 — 6축 프로필</li>
+        <li>월 1회 모먼트 추천</li>
+        <li>스토어 이용 · 단품 구매</li>
+      </ul>
+      <a class="btn btn-line btn-block" href="analyze.html">바로 진단하기</a>
+    </div>
+
+    <div class="plan best">
+      <span class="en">Plus — Subscription</span>
+      <h3 class="kh">개인화 구독</h3>
+      <div class="amt">9,900<s>원 / 월</s></div>
+      <p class="role">방을 계속 손보는 사람 · 언제든 해지</p>
+      <ul>
+        <li>AI 추천 <b>횟수 제한 없음</b></li>
+        <li>공간 변화 기록 — 방이 바뀐 순서를 남깁니다</li>
+        <li>월별 테마 제안과 배치 가이드</li>
+        <li>전 제품 회원가 (평균 8% 할인)</li>
+        <li>신제품 · 한정 셀렉트 우선 열람</li>
+        <li>큐레이션 박스 구성 제외 요청</li>
+      </ul>
+      <button class="btn btn-amber btn-block" id="subBtn">구독 시작하기</button>
+      <p class="tiny" style="margin-top:10px;text-align:center">위약금·최소 유지기간 없음</p>
+    </div>
+
+    <div class="plan">
+      <span class="en">Commerce</span>
+      <h3 class="kh">제품 구매</h3>
+      <div class="amt">필요할 때<s>만</s></div>
+      <p class="role">구독 없이도 가능 · 정기배송 아님</p>
+      <ul>
+        <li>추천 제품 단품 구매</li>
+        <li>모먼트 큐레이션 박스 단건 구매</li>
+        <li>5만원 이상 무료배송</li>
+        <li>제휴 브랜드 제품 입점</li>
+      </ul>
+      <a class="btn btn-line btn-block" href="shop.html">스토어 가기</a>
+    </div>
+  </div>
+
+  <!-- 수익 구조 -->
+  <section class="sec">
+    <div class="sec-hd">
+      <div>
+        <span class="lbl">Business model</span>
+        <h2 class="ttl" style="margin-top:10px">THREE LAYERS</h2>
+        <p class="kh" style="font-size:19px;margin-top:8px">왜 세 단계로 나눴나</p>
+      </div>
+      <p>무료 단계가 데이터를 모으고, 구독이 반복 매출을 만들고, 커머스가 거래액을 만듭니다. 한 층이 다음 층을 먹여 살리는 구조입니다.</p>
+    </div>
+    <div class="rev">
+      <div>
+        <div class="rn">① FREE</div>
+        <h4>무료 진단</h4>
+        <p>진입 장벽을 0으로 두고 취향 데이터를 모읍니다. 이 데이터가 추천 품질의 원천이고, 곧 서비스의 방어선입니다.</p>
+        <div class="share">역할 · 유입과 데이터</div>
+      </div>
+      <div>
+        <div class="rn">② SUBSCRIPTION</div>
+        <h4>월 9,900원 개인화</h4>
+        <p>물건이 아니라 서비스를 파는 층. 재고와 배송비가 붙지 않아 마진 구조가 단순하고, 매출이 예측됩니다.</p>
+        <div class="share">역할 · 반복 매출</div>
+      </div>
+      <div>
+        <div class="rn">③ COMMERCE</div>
+        <h4>판매 · 제휴 수수료</h4>
+        <p>추천이 정확할수록 전환이 오릅니다. 자체 재고를 최소화하고 제휴 브랜드 판매 수수료를 함께 가져갑니다.</p>
+        <div class="share">역할 · 거래액</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 로드맵 -->
+  <section class="sec" style="padding-top:0">
+    <div class="sec-hd">
+      <div>
+        <span class="lbl">Roadmap</span>
+        <h2 class="ttl" style="margin-top:10px">SMALL FIRST</h2>
+        <p class="kh" style="font-size:19px;margin-top:8px">지금은 1단계까지만 합니다</p>
+      </div>
+      <p>앱·AI·물류·자체 제품을 한 번에 만들지 않습니다. 반응이 확인된 순서대로 붙입니다.</p>
+    </div>
+    <div class="flow" style="grid-template-columns:repeat(4,1fr)">
+      <div>
+        <div class="fn">NOW</div>
+        <h4>AI 공간 추천</h4>
+        <p>사진 + 취향 테스트 → 프로필 → 모먼트 테마 → 제품 5개. 현재 이 사이트가 하는 일입니다.</p>
+      </div>
+      <div>
+        <div class="fn">NEXT</div>
+        <h4>큐레이션 박스</h4>
+        <p>한 번에 갖추고 싶은 수요만 확인되면 모먼트 단위 단건 박스를 운영합니다.</p>
+      </div>
+      <div>
+        <div class="fn">THEN</div>
+        <h4>구독 전환</h4>
+        <p>재방문율이 확보되면 개인화 구독을 켭니다. 물건이 아니라 서비스 구독입니다.</p>
+      </div>
+      <div>
+        <div class="fn">LATER</div>
+        <h4>브랜드 제휴</h4>
+        <p>추천 정확도가 증명되면 입점 제안이 성립합니다. 재고 없이 거래액을 만듭니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" style="padding-top:0">
+    <div class="faq">
+      <details open><summary>구독하면 매달 물건이 오나요?</summary>
+        <p class="ans">오지 않습니다. 구독료는 AI 개인화 추천과 공간 변화 기록 같은 서비스 이용료입니다. 물건은 스토어에서 원할 때만 사시면 되고, 구독자는 회원가가 적용됩니다.</p></details>
+      <details><summary>무료로도 충분한가요?</summary>
+        <p class="ans">한 번 진단하고 그에 맞는 제품을 사는 것까지는 무료로 다 됩니다. 구독은 방을 계속 손보면서 추천을 반복해서 받고 싶은 분에게 필요합니다.</p></details>
+      <details><summary>해지가 번거롭지 않나요?</summary>
+        <p class="ans">결제일 5일 전까지 언제든 해지할 수 있고, 위약금이나 최소 유지 기간이 없습니다. 해지해도 이미 만든 취향 프로필은 남습니다.</p></details>
+    </div>
+  </section>
+</div>
+</main>
+
+<div class="wood wood-thin"></div>
+<footer>
+  <div class="wrap">
+    <div class="fbot" style="border-top:0;padding-top:34px">
+      <span>OVSCENE 오브씬 — AI Space &amp; Lifestyle</span>
+      <span>브랜드 콘셉트 데모 사이트입니다. 실제 결제는 이루어지지 않습니다.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script src="assets/data.js"></script>
+<script src="assets/common.js"></script>
+<script>
+document.getElementById("subBtn").addEventListener("click", function () {
+  OVS.toast("브랜드 콘셉트 데모입니다 — 실제 결제는 진행되지 않습니다");
+});
+</script>
+</body>
+</html>

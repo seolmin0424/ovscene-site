@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>장바구니 — 오브씬 OVSCENE</title>
+<meta name="description" content="담아둔 제품을 확인하고 주문서로 넘어갑니다.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,300..800&family=Gothic+A1:wght@200;300;400;500;700;900&display=swap">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<a class="skip" href="#top">본문 바로가기</a>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html">
+      <svg width="28" height="28" viewBox="0 0 100 100" aria-label="오브씬 홈">
+        <path d="M76.8 70.9 A34 34 0 1 1 76.8 29.1" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+        <circle cx="81" cy="50" r="6.4" fill="var(--amber)"/>
+      </svg>
+      <span class="brand-word">OVSCENE</span>
+    </a>
+    <nav class="menu" aria-label="주요 메뉴">
+      <a href="index.html">Home</a>
+      <a href="analyze.html">취향 진단</a>
+      <a href="shop.html">Store</a>
+      <a href="plans.html">이용권</a>
+    </nav>
+    <div class="nav-r">
+      <button class="iconb" id="themeBtn" aria-label="화면 테마 전환">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" stroke-linejoin="round"/></svg>
+      </button>
+      <a class="cartb" href="cart.html" aria-current="page">Cart <span class="cnt" id="cartCount">0</span></a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+<div class="wrap">
+  <nav class="crumb" aria-label="경로"><a href="index.html">Home</a><i>/</i><span>장바구니</span></nav>
+
+  <div class="steps">
+    <div data-s="1" aria-current="step"><b>1</b>장바구니</div>
+    <div data-s="2"><b>2</b>주문서</div>
+    <div data-s="3"><b>3</b>완료</div>
+  </div>
+
+  <h1 class="ttl" style="font-size:clamp(26px,3.4vw,38px);margin-bottom:26px">CART</h1>
+
+  <div class="cartwrap" id="cartWrap">
+    <div>
+      <div id="rows"></div>
+      <p style="margin-top:24px"><a class="btn btn-line" href="shop.html">계속 쇼핑하기</a></p>
+    </div>
+    <aside class="summary">
+      <h3>주문 요약</h3>
+      <div class="sline"><span>상품 금액</span><b id="sSub">0원</b></div>
+      <div class="sline"><span>배송비</span><b id="sShip">0원</b></div>
+      <div class="sline" id="freeHint" style="color:var(--amber);font-size:12.5px"></div>
+      <div class="stotal"><span>결제 예정 금액</span><span class="tv" id="sTotal">0원</span></div>
+      <a class="btn btn-amber btn-lg btn-block" href="checkout.html" id="toCheckout">주문서 작성</a>
+      <p class="tiny" style="margin-top:12px;text-align:center">데모 사이트입니다 · 실제 결제는 진행되지 않습니다</p>
+    </aside>
+  </div>
+
+  <div id="emptyBox" style="display:none;padding-bottom:80px">
+    <p class="empty">장바구니가 비어 있습니다.<br>어떤 시간을 보낼지부터 골라보세요.</p>
+    <div style="display:flex;gap:10px;justify-content:center;margin-top:24px;flex-wrap:wrap">
+      <a class="btn btn-amber btn-lg" href="analyze.html">취향 진단하기</a>
+      <a class="btn btn-line btn-lg" href="shop.html">스토어 둘러보기</a>
+    </div>
+  </div>
+</div>
+</main>
+
+<div class="wood wood-thin"></div>
+<footer>
+  <div class="wrap">
+    <div class="fbot" style="border-top:0;padding-top:34px">
+      <span>OVSCENE 오브씬 — AI Space &amp; Lifestyle</span>
+      <span>브랜드 콘셉트 데모 사이트입니다. 실제 결제는 이루어지지 않습니다.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script src="assets/data.js"></script>
+<script src="assets/common.js"></script>
+<script>
+(function () {
+  "use strict";
+  var $ = OVS.$, $$ = OVS.$$;
+  var style = OVS.profile ? OVS.styleById(OVS.profile.style) : OVS.styleById("eco");
+
+  function render() {
+    var empty = OVS.cart.length === 0;
+    $("#cartWrap").style.display = empty ? "none" : "grid";
+    $("#emptyBox").style.display = empty ? "block" : "none";
+    if (empty) return;
+
+    $("#rows").innerHTML = OVS.cart.map(function (c) {
+      var it = OVS.byId(c.id);
+      return '<div class="crow" data-id="' + c.id + '">' +
+        '<a href="product.html?id=' + c.id + '" class="cfig">' + OVS.scene([c.type], style, 240, 180, true) + "</a>" +
+        "<div>" +
+          '<a href="product.html?id=' + c.id + '"><h3 class="kh">' + c.name + "</h3></a>" +
+          '<div class="cmeta">' + c.cat + (it && it.random ? " · 구성 랜덤" : "") + "</div>" +
+          '<div class="cmeta">' + OVS.won(c.price) + " / 개</div>" +
+          '<span class="qtybox" style="margin-top:10px">' +
+            '<button data-m="' + c.id + '" aria-label="수량 줄이기">−</button>' +
+            "<span>" + c.qty + "</span>" +
+            '<button data-p="' + c.id + '" aria-label="수량 늘리기">+</button></span>' +
+        "</div>" +
+        '<div><div class="cprice">' + OVS.won(c.price * c.qty) + "</div>" +
+        '<button class="rm" data-r="' + c.id + '">삭제</button></div></div>';
+    }).join("");
+
+    var sub = OVS.cartTotal(), ship = OVS.shipping(sub);
+    $("#sSub").textContent = OVS.won(sub);
+    $("#sShip").textContent = ship === 0 ? "무료" : OVS.won(ship);
+    $("#sTotal").textContent = OVS.won(sub + ship);
+    $("#freeHint").innerHTML = sub > 0 && sub < 50000
+      ? "<span>" + OVS.won(50000 - sub) + " 더 담으면 무료배송</span>"
+      : "";
+
+    $$("#rows [data-p]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var c = OVS.cart.filter(function (x) { return x.id === b.dataset.p; })[0];
+        OVS.setQty(c.id, c.qty + 1); render();
+      });
+    });
+    $$("#rows [data-m]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var c = OVS.cart.filter(function (x) { return x.id === b.dataset.m; })[0];
+        OVS.setQty(c.id, c.qty - 1); render();
+      });
+    });
+    $$("#rows [data-r]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        OVS.removeFromCart(b.dataset.r);
+        OVS.toast("장바구니에서 뺐습니다");
+        render();
+      });
+    });
+  }
+  render();
+})();
+</script>
+</body>
+</html>

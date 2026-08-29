@@ -1,60 +1,82 @@
 # OVSCENE 오브씬 — 웹사이트
 
-1인 가구를 위한 취향 기반 리빙 큐레이션 브랜드 콘셉트 사이트.
-테마(모던 · 빈티지 · 키치 · 에코 · 메탈릭) 하나를 고르면 오브제 구성은 무작위로 채워진다는
-브랜드 핵심 개념을 실제로 눌러볼 수 있게 만든 정적 사이트입니다.
+> AI가 1인가구의 취향과 현재 상황을 분석해, 집에서 보내는 시간을 특별하게 만들어주는
+> 개인화 공간·라이프스타일 서비스
 
-## 구조
+빌드 도구 없이 동작하는 정적 사이트입니다. `index.html`을 브라우저로 열면 그대로 실행됩니다.
+
+## 서비스 구조
+
+**제품이 아니라 시간을 고릅니다.** 사용자는 "무엇을 살까"가 아니라
+"오늘을 어떻게 보낼까"에서 시작합니다.
+
+- **모먼트 8종** — 일상 5종(퇴근 후 휴식 / 집중 / 기분전환 / 혼술 / 주말 아침),
+  나를 위한 작은 사치 3종(시험 끝난 날 / 비 오는 날 저녁 / 새로운 한 달)
+- **취향 프로필 6축** — 색상 · 소재 · 조명 · 향 · 스타일 · 가격대.
+  방 사진 + 6문항 + 이후의 선택 데이터로 값이 조정됩니다
+- **정기배송 없음** — 구독은 개인화 서비스 이용권이고, 물건은 필요할 때만 구매합니다
+
+**수익 3단계**: ① 무료 진단(유입·데이터) → ② 월 9,900원 개인화 구독(반복 매출)
+→ ③ 커머스·제휴 수수료(거래액)
+
+## 페이지
+
+| 파일 | 역할 |
+|---|---|
+| `index.html` | 홈 — 모먼트, AI 개인화 방식, 5단계 흐름, 3단계 모델 |
+| `analyze.html` | **취향 진단 (MVP 핵심)** — 사진 → 6문항 → 모먼트 → 분석 → 결과 |
+| `shop.html` | 스토어 — 모먼트·카테고리 필터, 프로필 매칭순 정렬 |
+| `product.html` | 제품 상세 (`?id=`) — 스펙, 매칭 근거, 수량, 바로 구매 |
+| `cart.html` | 장바구니 |
+| `checkout.html` | 주문서 → 완료 |
+| `plans.html` | 이용권 · 수익 구조 · 로드맵 |
+
+구매 흐름은 앵커 스크롤이 아니라 **실제 페이지 이동**입니다.
+장바구니 → 주문서 → 완료 각 단계가 자기 URL을 가지며 상단에 단계 표시가 붙습니다.
+
+## 파일
 
 ```
 ovscene-site/
-├── index.html          한 페이지 전체 (섹션 앵커로 이동)
+├── index.html  analyze.html  shop.html  product.html
+├── cart.html   checkout.html plans.html 404.html
 ├── assets/
-│   ├── styles.css      디자인 토큰 · 레이아웃 · 반응형
-│   ├── app.js          테마 데이터, 랜덤 추첨, 오브제 SVG 생성, 장바구니
-│   ├── favicon.svg     로고 심볼
-│   └── og.svg          공유용 미리보기 이미지
-├── 404.html
-└── .nojekyll           GitHub Pages에서 assets 폴더를 그대로 서빙
+│   ├── styles.css   디자인 토큰 · 컴포넌트 · 반응형
+│   ├── data.js      모먼트 / 스타일 / 6축 / 문항 / 제품
+│   ├── common.js    저장소 · 장바구니 · 오브제 SVG · 추천 엔진
+│   ├── favicon.svg  og.svg
+└── .nojekyll
 ```
-
-빌드 도구가 필요 없습니다. `index.html`을 브라우저로 열면 그대로 동작합니다.
 
 ## 수정하기 쉬운 곳
 
 | 무엇을 | 어디서 |
 |---|---|
-| 테마 5종 이름·색·설명 | `assets/app.js`의 `THEMES` 배열 |
-| 판매 팩 이름·가격·구성 풀 | `assets/app.js`의 `PACKS` 배열 |
-| 오브제 종류 이름 | `assets/app.js`의 `NAMES` 객체 |
-| 브랜드 색 · 우드 톤 | `assets/styles.css` 상단 `:root` 변수 |
-| 문구 · FAQ · 푸터 | `index.html` |
+| 모먼트 추가·수정 | `assets/data.js` → `OVS.MOMENTS` |
+| 제품 · 가격 · 스펙 | `assets/data.js` → `OVS.PRODUCTS`, `OVS.BOXES` |
+| 취향 문항과 축 가중치 | `assets/data.js` → `OVS.QUESTIONS` (각 선택지의 `d`) |
+| 스타일 팔레트 | `assets/data.js` → `OVS.STYLES` |
+| 추천 알고리즘 | `assets/common.js` → `OVS.matchScore`, `OVS.recommend` |
+| 스타일 판정 기준 | `analyze.html` 하단 스크립트의 `IDEAL` |
+| 브랜드 색 · 우드 톤 | `assets/styles.css` 상단 `:root` |
 
-실제 제품 사진이 생기면 `assets/app.js`의 `scene()` 함수가 만드는 SVG 자리를
+실제 제품 사진이 생기면 `OVS.scene()` / `OVS.hero1()`이 만드는 SVG 자리를
 `<img>` 태그로 바꾸면 됩니다.
+
+## 데이터 처리
+
+- **방 사진은 서버로 전송되지 않습니다.** `FileReader`로 브라우저 안에서만 읽고,
+  탭을 닫으면 사라집니다.
+- 취향 프로필과 장바구니는 `localStorage`에만 저장됩니다.
+- 결제·회원가입·메일 발송은 동작하지 않는 데모입니다.
+
+실제 판매를 하려면 결제 PG 연동과 전자상거래법상 사업자 정보 표기
+(상호·대표자·사업자등록번호·통신판매업 신고번호)가 추가로 필요합니다.
 
 ## 배포
 
-정적 파일만 있으므로 어떤 호스팅에도 올릴 수 있습니다.
-
-**GitHub Pages**
+GitHub Pages로 배포되어 있습니다. `main`에 push하면 1~2분 내 반영됩니다.
 
 ```
-git remote add origin https://github.com/<사용자명>/ovscene-site.git
-git branch -M main
-git push -u origin main
+https://seolmin0424.github.io/ovscene-site/
 ```
-
-푸시한 뒤 저장소 → Settings → Pages → Source를 `main` / `root`로 지정하면
-`https://<사용자명>.github.io/ovscene-site/` 로 열립니다.
-
-**Netlify Drop** — <https://app.netlify.com/drop> 에 `ovscene-site` 폴더를 그대로 끌어다 놓으면
-바로 주소가 발급됩니다. 계정 없이도 임시 주소를 받을 수 있습니다.
-
-**Vercel** — <https://vercel.com/new> 에서 이 저장소를 불러오면 설정 없이 배포됩니다.
-
-## 참고
-
-결제·회원가입·메일 발송은 실제로 동작하지 않는 데모입니다.
-장바구니 내용은 브라우저의 localStorage에만 저장되며 서버로 전송되지 않습니다.
-실제 판매를 하려면 결제 PG 연동과 사업자 정보 표기(전자상거래법상 필수)가 추가로 필요합니다.

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>스토어 — 오브씬 OVSCENE</title>
+<meta name="description" content="모먼트와 취향 프로필에 맞춰 정렬되는 제품 목록. 정기배송 없이 필요할 때만 구매합니다.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,300..800&family=Gothic+A1:wght@200;300;400;500;700;900&display=swap">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<a class="skip" href="#top">본문 바로가기</a>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html">
+      <svg width="28" height="28" viewBox="0 0 100 100" aria-label="오브씬 홈">
+        <path d="M76.8 70.9 A34 34 0 1 1 76.8 29.1" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+        <circle cx="81" cy="50" r="6.4" fill="var(--amber)"/>
+      </svg>
+      <span class="brand-word">OVSCENE</span>
+    </a>
+    <nav class="menu" aria-label="주요 메뉴">
+      <a href="index.html">Home</a>
+      <a href="analyze.html">취향 진단</a>
+      <a href="shop.html" aria-current="page">Store</a>
+      <a href="plans.html">이용권</a>
+    </nav>
+    <div class="nav-r">
+      <button class="iconb" id="themeBtn" aria-label="화면 테마 전환">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" stroke-linejoin="round"/></svg>
+      </button>
+      <a class="cartb" href="cart.html">Cart <span class="cnt" id="cartCount">0</span></a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+<div class="wrap">
+  <nav class="crumb" aria-label="경로"><a href="index.html">Home</a><i>/</i><span>Store</span></nav>
+
+  <div class="sec-hd" style="margin-bottom:26px">
+    <div>
+      <span class="lbl" id="shopKicker">All products</span>
+      <h1 class="ttl" style="font-size:clamp(28px,3.6vw,42px);margin-top:10px" id="shopTitle">STORE</h1>
+      <p class="kh" style="font-size:19px;margin-top:8px" id="shopSub">필요할 때만, 원하는 것만.</p>
+    </div>
+    <p id="shopNote">정기배송이 없습니다. 취향 진단을 마치면 프로필 매칭도 순으로 정렬됩니다.</p>
+  </div>
+
+  <!-- 모먼트 필터 -->
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px" id="momentBar"></div>
+
+  <div class="filters">
+    <div class="tabs" id="catTabs"></div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <label class="lbl" for="sort">Sort</label>
+      <select class="sortsel" id="sort">
+        <option value="match">내 취향 매칭순</option>
+        <option value="low">낮은 가격순</option>
+        <option value="high">높은 가격순</option>
+        <option value="name">이름순</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+  <p id="noresult" class="empty" style="display:none">이 조건에 맞는 제품이 없습니다.<br>다른 모먼트나 카테고리를 골라보세요.</p>
+
+  <section class="sec" id="profileCta"></section>
+</div>
+</main>
+
+<div class="wood wood-thin"></div>
+<footer>
+  <div class="wrap">
+    <div class="fbot" style="border-top:0;padding-top:34px">
+      <span>OVSCENE 오브씬 — AI Space &amp; Lifestyle</span>
+      <span>브랜드 콘셉트 데모 사이트입니다. 실제 결제는 이루어지지 않습니다.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script src="assets/data.js"></script>
+<script src="assets/common.js"></script>
+<script>
+(function () {
+  "use strict";
+  var $ = OVS.$, $$ = OVS.$$;
+
+  var params = new URLSearchParams(location.search);
+  var curMoment = params.get("moment") || "all";
+  var curCat = params.get("cat") || "전체";
+  var curSort = OVS.profile ? "match" : "low";
+  $("#sort").value = curSort;
+
+  var profStyle = OVS.profile ? OVS.styleById(OVS.profile.style) : OVS.styleById("eco");
+
+  /* ---------- 헤더 문구 ---------- */
+  function head() {
+    if (curMoment === "all") {
+      $("#shopKicker").textContent = "All products";
+      $("#shopTitle").textContent = "STORE";
+      $("#shopSub").textContent = "필요할 때만, 원하는 것만.";
+      $("#shopNote").textContent = OVS.profile
+        ? "취향 프로필이 적용되어 매칭도 순으로 정렬됩니다."
+        : "정기배송이 없습니다. 취향 진단을 마치면 프로필 매칭도 순으로 정렬됩니다.";
+    } else {
+      var m = OVS.momentById(curMoment);
+      $("#shopKicker").textContent = "Moment · " + m.en;
+      $("#shopTitle").textContent = m.ko;
+      $("#shopSub").textContent = m.line;
+      $("#shopNote").textContent = m.desc;
+    }
+  }
+
+  /* ---------- 모먼트 바 ---------- */
+  function chip(id, label, on) {
+    return '<button class="tab" style="border:1px solid ' + (on ? "var(--amber)" : "var(--line-2)") +
+      ';border-radius:999px;padding:7px 15px;letter-spacing:.08em;color:' + (on ? "var(--amber)" : "var(--text-2)") +
+      ';background:' + (on ? "var(--amber-soft)" : "transparent") + '" data-m="' + id + '">' + label + "</button>";
+  }
+  function renderMomentBar() {
+    $("#momentBar").innerHTML = chip("all", "전체", curMoment === "all") +
+      OVS.MOMENTS.map(function (m) { return chip(m.id, m.ko, curMoment === m.id); }).join("");
+    $$("#momentBar [data-m]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        curMoment = b.dataset.m;
+        syncUrl(); renderMomentBar(); head(); render();
+      });
+    });
+  }
+
+  /* ---------- 카테고리 탭 ---------- */
+  function renderCatTabs() {
+    $("#catTabs").innerHTML = OVS.CATS.map(function (c) {
+      return '<button class="tab" data-c="' + c + '" aria-pressed="' + (c === curCat) + '">' + c + "</button>";
+    }).join("");
+    $$("#catTabs [data-c]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        curCat = b.dataset.c; syncUrl(); renderCatTabs(); render();
+      });
+    });
+  }
+
+  function syncUrl() {
+    var p = new URLSearchParams();
+    if (curMoment !== "all") p.set("moment", curMoment);
+    if (curCat !== "전체") p.set("cat", curCat);
+    var q = p.toString();
+    history.replaceState(null, "", location.pathname + (q ? "?" + q : ""));
+  }
+
+  $("#sort").addEventListener("change", function () { curSort = this.value; render(); });
+
+  /* ---------- 목록 ---------- */
+  function render() {
+    var list = OVS.ALL_ITEMS.filter(function (it) {
+      if (curCat !== "전체" && it.cat !== curCat) return false;
+      if (curMoment !== "all" && it.moments.indexOf(curMoment) < 0) return false;
+      return true;
+    });
+
+    if (curSort === "low") list.sort(function (a, b) { return a.price - b.price; });
+    else if (curSort === "high") list.sort(function (a, b) { return b.price - a.price; });
+    else if (curSort === "name") list.sort(function (a, b) { return a.name.localeCompare(b.name, "ko"); });
+    else list.sort(function (a, b) { return OVS.matchScore(b, OVS.profile) - OVS.matchScore(a, OVS.profile); });
+
+    $("#noresult").style.display = list.length ? "none" : "block";
+
+    $("#grid").innerHTML = list.map(function (it) {
+      var score = OVS.profile ? OVS.matchScore(it, OVS.profile) : 0;
+      var badge = it.random
+        ? '<span class="pill"><i></i>구성 랜덤</span>'
+        : (OVS.profile && score >= 60 ? '<span class="pill match"><i></i>' + score + "% 매칭</span>" : "");
+      return '<article class="pcard"><a href="product.html?id=' + it.id + '" aria-label="' + it.name + ' 상세보기">' +
+        '<div class="pfig">' + OVS.scene([it.type], profStyle, 300, 225, true) + badge + "</div></a>" +
+        '<div class="pb"><div class="cat">' + it.cat + "</div>" +
+        '<a href="product.html?id=' + it.id + '"><h3 class="kh">' + it.name + "</h3></a>" +
+        '<p class="dsc">' + it.desc + "</p>" +
+        '<div class="pfoot"><span class="price">' + OVS.won(it.price) + "</span>" +
+        '<button class="addb" data-add="' + it.id + '">담기</button></div></div></article>';
+    }).join("");
+
+    $$("#grid [data-add]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var it = OVS.byId(b.dataset.add);
+        OVS.addToCart(it, 1);
+        b.textContent = "담김"; b.classList.add("ok");
+        OVS.toast(it.name + " 담았습니다");
+        setTimeout(function () { b.textContent = "담기"; b.classList.remove("ok"); }, 1200);
+      });
+    });
+  }
+
+  /* ---------- 프로필 유도 ---------- */
+  if (!OVS.profile) {
+    $("#profileCta").innerHTML =
+      '<div style="border:1px solid var(--amber);background:var(--amber-soft);border-radius:6px;padding:34px 32px;display:flex;justify-content:space-between;gap:26px;align-items:center;flex-wrap:wrap">' +
+      '<div><h3 class="kh" style="font-size:20px">아직 취향 프로필이 없습니다</h3>' +
+      '<p class="muted" style="font-size:13.5px;margin-top:8px;max-width:52ch">3분이면 끝납니다. 진단을 마치면 이 목록이 매칭도 순으로 다시 정렬되고, 각 제품에 왜 맞는지 이유가 붙습니다.</p></div>' +
+      '<a class="btn btn-amber btn-lg" href="analyze.html">무료로 진단하기</a></div>';
+  } else {
+    var st = OVS.styleById(OVS.profile.style), mm = OVS.momentById(OVS.profile.moment);
+    $("#profileCta").innerHTML =
+      '<div style="border:1px solid var(--line);border-radius:6px;padding:26px 28px;display:flex;justify-content:space-between;gap:22px;align-items:center;flex-wrap:wrap;background:var(--card)">' +
+      '<div><span class="lbl">Applied profile</span><p class="kh" style="font-size:17px;margin-top:6px">' +
+      st.ko + " 스타일 · " + mm.ko + ' 모먼트 기준으로 정렬 중</p></div>' +
+      '<a class="btn btn-line" href="analyze.html">다시 진단하기</a></div>';
+  }
+
+  head(); renderMomentBar(); renderCatTabs(); render();
+})();
+</script>
+</body>
+</html>

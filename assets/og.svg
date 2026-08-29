@@ -6,25 +6,21 @@
   <rect x="0" y="496" width="1200" height="8" fill="rgba(0,0,0,.12)"/>
 
   <!-- objects -->
-  <g stroke="#2E2E2C" stroke-width="3" stroke-linejoin="round">
-    <!-- lamp -->
-    <g transform="translate(760,470)">
-      <rect x="-26" y="-22" width="52" height="22" rx="5" fill="#9BA0A6"/>
+  <g stroke="#3E4A31" stroke-width="3" stroke-linejoin="round">
+    <g transform="translate(770,470)">
+      <rect x="-26" y="-22" width="52" height="22" rx="5" fill="#5F7048"/>
       <circle cx="0" cy="-58" r="37" fill="#C67842" opacity=".45"/>
       <circle cx="0" cy="-58" r="37" fill="none"/>
       <path d="M-7 -42 v-16 a7 7 0 0 1 14 0 v16" fill="none"/>
     </g>
-    <!-- vase -->
-    <g transform="translate(880,470)">
-      <path d="M-18 -30 q-7 30 18 30 q25 0 18 -30 z" fill="#E3E2DE"/>
-      <path d="M-11 -30 h22 v-12 h-22 z" fill="#E3E2DE"/>
-      <path d="M0 -42 v-33" stroke="#9BA0A6"/>
-      <circle cx="0" cy="-81" r="11" fill="#9BA0A6"/>
+    <g transform="translate(890,470)">
+      <path d="M-22 -48 h44 v-16 h-44 z" fill="#E6E2D2"/>
+      <path d="M-22 -48 h44 v34 h-44 z" fill="#94A57C"/>
+      <path d="M0 -64 v-12" stroke="#3E4A31"/>
     </g>
-    <!-- book -->
-    <g transform="translate(1000,470)">
-      <path d="M-41 0 v-52 l82 -11 v52 z" fill="#2E2E2C"/>
-      <path d="M-41 -52 l82 -11 l0 8 l-82 11 z" fill="#FFFFFF"/>
+    <g transform="translate(1010,470)">
+      <path d="M-41 0 v-52 l82 -11 v52 z" fill="#5F7048"/>
+      <path d="M-41 -52 l82 -11 l0 8 l-82 11 z" fill="#E6E2D2"/>
     </g>
   </g>
 
@@ -35,9 +31,9 @@
   </g>
   <text x="164" y="152" font-family="Archivo, Helvetica, Arial, sans-serif" font-size="30" font-weight="600" letter-spacing="6" fill="#1C1B18">OVSCENE</text>
 
-  <text x="96" y="292" font-family="Archivo, Helvetica, Arial, sans-serif" font-size="96" font-weight="700" letter-spacing="-2" fill="#1C1B18">PICK A THEME.</text>
-  <text x="96" y="384" font-family="Archivo, Helvetica, Arial, sans-serif" font-size="96" font-weight="700" letter-spacing="-2" fill="none" stroke="#1C1B18" stroke-width="2">NOT ITEMS.</text>
+  <text x="96" y="286" font-family="Archivo, Helvetica, Arial, sans-serif" font-size="88" font-weight="700" letter-spacing="-2" fill="#1C1B18">HOW WILL YOU</text>
+  <text x="96" y="374" font-family="Archivo, Helvetica, Arial, sans-serif" font-size="88" font-weight="700" letter-spacing="-2" fill="none" stroke="#1C1B18" stroke-width="2">SPEND TONIGHT?</text>
 
-  <text x="96" y="442" font-family="'Gothic A1', 'Malgun Gothic', sans-serif" font-size="27" fill="#6E6A62">테마만 고르세요 · 안에 들어갈 오브제는 매번 랜덤입니다</text>
-  <text x="96" y="566" font-family="Archivo, Helvetica, Arial, sans-serif" font-size="19" letter-spacing="4" fill="#9A958B">MODERN · VINTAGE · KITSCH · ECO · METALLIC</text>
+  <text x="96" y="434" font-family="'Gothic A1', 'Malgun Gothic', sans-serif" font-size="26" fill="#6E6A62">물건을 고르지 마세요 · 오늘 어떻게 보낼지만 고르세요</text>
+  <text x="96" y="566" font-family="Archivo, Helvetica, Arial, sans-serif" font-size="18" letter-spacing="3.4" fill="#9A958B">AI SPACE &amp; LIFESTYLE — 취향 진단 무료</text>
 </svg>

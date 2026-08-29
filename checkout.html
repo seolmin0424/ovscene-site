@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>주문서 — 오브씬 OVSCENE</title>
+<meta name="description" content="주문 정보를 확인하고 결제합니다.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,300..800&family=Gothic+A1:wght@200;300;400;500;700;900&display=swap">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<a class="skip" href="#top">본문 바로가기</a>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html">
+      <svg width="28" height="28" viewBox="0 0 100 100" aria-label="오브씬 홈">
+        <path d="M76.8 70.9 A34 34 0 1 1 76.8 29.1" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+        <circle cx="81" cy="50" r="6.4" fill="var(--amber)"/>
+      </svg>
+      <span class="brand-word">OVSCENE</span>
+    </a>
+    <nav class="menu" aria-label="주요 메뉴">
+      <a href="index.html">Home</a>
+      <a href="analyze.html">취향 진단</a>
+      <a href="shop.html">Store</a>
+      <a href="plans.html">이용권</a>
+    </nav>
+    <div class="nav-r">
+      <button class="iconb" id="themeBtn" aria-label="화면 테마 전환">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" stroke-linejoin="round"/></svg>
+      </button>
+      <a class="cartb" href="cart.html">Cart <span class="cnt" id="cartCount">0</span></a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+<div class="wrap">
+  <nav class="crumb" aria-label="경로">
+    <a href="index.html">Home</a><i>/</i><a href="cart.html">장바구니</a><i>/</i><span>주문서</span>
+  </nav>
+
+  <div class="steps" id="steps">
+    <div data-s="1"><b>1</b>장바구니</div>
+    <div data-s="2" aria-current="step"><b>2</b>주문서</div>
+    <div data-s="3"><b>3</b>완료</div>
+  </div>
+
+  <!-- ===== 주문서 ===== -->
+  <section id="formStage">
+    <h1 class="ttl" style="font-size:clamp(26px,3.4vw,38px);margin-bottom:26px">CHECKOUT</h1>
+
+    <div class="cartwrap">
+      <form id="orderForm" novalidate>
+        <h2 class="kh" style="font-size:18px;margin-bottom:16px">받는 분</h2>
+        <div class="fieldrow">
+          <div class="field"><label for="name">이름</label><input id="name" required autocomplete="name"></div>
+          <div class="field"><label for="tel">연락처</label><input id="tel" inputmode="tel" placeholder="010-0000-0000" required autocomplete="tel"></div>
+        </div>
+        <div class="field"><label for="email">이메일</label><input id="email" type="email" placeholder="주문 내역을 보내드립니다" required autocomplete="email"></div>
+        <div class="fieldrow">
+          <div class="field"><label for="zip">우편번호</label><input id="zip" inputmode="numeric" required autocomplete="postal-code"></div>
+          <div class="field"><label for="addr1">주소</label><input id="addr1" required autocomplete="street-address"></div>
+        </div>
+        <div class="field"><label for="addr2">상세 주소</label><input id="addr2" autocomplete="address-line2"></div>
+        <div class="field"><label for="memo">배송 요청사항</label><input id="memo" placeholder="부재 시 문 앞에 놓아주세요"></div>
+
+        <h2 class="kh" style="font-size:18px;margin:32px 0 16px">결제 수단</h2>
+        <div class="paylist">
+          <label class="pay"><input type="radio" name="pay" value="card" checked> 신용 · 체크카드</label>
+          <label class="pay"><input type="radio" name="pay" value="easy"> 간편결제 (카카오페이 · 네이버페이)</label>
+          <label class="pay"><input type="radio" name="pay" value="bank"> 무통장 입금</label>
+        </div>
+
+        <div class="notice">
+          여기는 브랜드 콘셉트 데모입니다. 카드번호 같은 결제 정보는 입력받지 않으며,
+          입력하신 내용은 어디로도 전송되지 않고 이 화면 안에서만 쓰입니다.
+        </div>
+      </form>
+
+      <aside class="summary">
+        <h3>주문 요약</h3>
+        <div id="sumRows" style="padding:14px 0;border-bottom:1px solid var(--line)"></div>
+        <div class="sline"><span>상품 금액</span><b id="sSub">0원</b></div>
+        <div class="sline"><span>배송비</span><b id="sShip">0원</b></div>
+        <div class="stotal"><span>결제 금액</span><span class="tv" id="sTotal">0원</span></div>
+        <button class="btn btn-amber btn-lg btn-block" id="payBtn" form="orderForm">결제하기</button>
+        <p class="tiny" style="margin-top:12px;text-align:center">실제 결제는 진행되지 않습니다</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ===== 완료 ===== -->
+  <section id="doneStage" style="display:none">
+    <div class="done">
+      <div class="mark">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m5 13 5 5L20 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span class="lbl">Order placed (demo)</span>
+      <h1 class="ttl" style="margin:12px 0 14px">주문이 접수되었습니다</h1>
+      <p class="muted" style="max-width:44ch;margin:0 auto">주문번호 <b class="num" id="orderNo"></b><br>
+        배송이 시작되면 입력하신 이메일로 알려드립니다.</p>
+      <div style="display:flex;gap:10px;justify-content:center;margin-top:34px;flex-wrap:wrap">
+        <a class="btn btn-fill btn-lg" href="shop.html">계속 쇼핑하기</a>
+        <a class="btn btn-line btn-lg" href="analyze.html">취향 다시 진단하기</a>
+      </div>
+      <div class="notice" style="max-width:520px;margin:40px auto 0;text-align:left">
+        데모 주문입니다. 실제 결제·배송은 이루어지지 않으며, 입력하신 정보는 저장되지 않았습니다.
+      </div>
+    </div>
+  </section>
+</div>
+</main>
+
+<div class="wood wood-thin"></div>
+<footer>
+  <div class="wrap">
+    <div class="fbot" style="border-top:0;padding-top:34px">
+      <span>OVSCENE 오브씬 — AI Space &amp; Lifestyle</span>
+      <span>브랜드 콘셉트 데모 사이트입니다. 실제 결제는 이루어지지 않습니다.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script src="assets/data.js"></script>
+<script src="assets/common.js"></script>
+<script>
+(function () {
+  "use strict";
+  var $ = OVS.$, $$ = OVS.$$;
+
+  if (!OVS.cart.length) {
+    location.replace("cart.html");
+    return;
+  }
+
+  function renderSummary() {
+    $("#sumRows").innerHTML = OVS.cart.map(function (c) {
+      return '<div style="display:flex;justify-content:space-between;gap:12px;padding:5px 0;font-size:13.5px">' +
+        '<span class="muted">' + c.name + ' <span class="tiny">× ' + c.qty + "</span></span>" +
+        '<b class="num">' + OVS.won(c.price * c.qty) + "</b></div>";
+    }).join("");
+    var sub = OVS.cartTotal(), ship = OVS.shipping(sub);
+    $("#sSub").textContent = OVS.won(sub);
+    $("#sShip").textContent = ship === 0 ? "무료" : OVS.won(ship);
+    $("#sTotal").textContent = OVS.won(sub + ship);
+  }
+  renderSummary();
+
+  $("#orderForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    var required = ["name", "tel", "email", "zip", "addr1"];
+    var missing = required.filter(function (id) { return !$("#" + id).value.trim(); });
+    if (missing.length) {
+      $("#" + missing[0]).focus();
+      OVS.toast("필수 항목을 채워주세요");
+      return;
+    }
+
+    var no = "OVS-" + new Date().toISOString().slice(2, 10).replace(/-/g, "") + "-" +
+             String(Math.floor(Math.random() * 9000) + 1000);
+    $("#orderNo").textContent = no;
+
+    OVS.clearCart();
+    $("#formStage").style.display = "none";
+    $("#doneStage").style.display = "block";
+    $$("#steps div").forEach(function (d) {
+      if (d.dataset.s === "3") d.setAttribute("aria-current", "step");
+      else d.removeAttribute("aria-current");
+    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+})();
+</script>
+</body>
+</html>

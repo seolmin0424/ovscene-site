@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>제품 상세 — 오브씬 OVSCENE</title>
+<meta name="description" content="오브씬 제품 상세 페이지.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,300..800&family=Gothic+A1:wght@200;300;400;500;700;900&display=swap">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<a class="skip" href="#top">본문 바로가기</a>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html">
+      <svg width="28" height="28" viewBox="0 0 100 100" aria-label="오브씬 홈">
+        <path d="M76.8 70.9 A34 34 0 1 1 76.8 29.1" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+        <circle cx="81" cy="50" r="6.4" fill="var(--amber)"/>
+      </svg>
+      <span class="brand-word">OVSCENE</span>
+    </a>
+    <nav class="menu" aria-label="주요 메뉴">
+      <a href="index.html">Home</a>
+      <a href="analyze.html">취향 진단</a>
+      <a href="shop.html" aria-current="page">Store</a>
+      <a href="plans.html">이용권</a>
+    </nav>
+    <div class="nav-r">
+      <button class="iconb" id="themeBtn" aria-label="화면 테마 전환">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" stroke-linejoin="round"/></svg>
+      </button>
+      <a class="cartb" href="cart.html">Cart <span class="cnt" id="cartCount">0</span></a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+<div class="wrap">
+  <nav class="crumb" aria-label="경로">
+    <a href="index.html">Home</a><i>/</i><a href="shop.html">Store</a><i>/</i><span id="crumbCat">—</span>
+  </nav>
+  <div id="pdHost"></div>
+
+  <section class="sec" style="padding-top:20px" id="relatedSec" hidden>
+    <div class="sec-hd" style="margin-bottom:24px">
+      <div><span class="lbl">Same moment</span><h2 class="kh" style="font-size:21px;margin-top:8px" id="relTitle">같은 모먼트의 다른 제품</h2></div>
+    </div>
+    <div class="grid" id="related"></div>
+  </section>
+</div>
+</main>
+
+<div class="wood wood-thin"></div>
+<footer>
+  <div class="wrap">
+    <div class="fbot" style="border-top:0;padding-top:34px">
+      <span>OVSCENE 오브씬 — AI Space &amp; Lifestyle</span>
+      <span>브랜드 콘셉트 데모 사이트입니다. 실제 결제는 이루어지지 않습니다.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script src="assets/data.js"></script>
+<script src="assets/common.js"></script>
+<script>
+(function () {
+  "use strict";
+  var $ = OVS.$, $$ = OVS.$$;
+
+  var id = new URLSearchParams(location.search).get("id");
+  var it = OVS.byId(id);
+  var host = $("#pdHost");
+
+  if (!it) {
+    host.innerHTML = '<p class="empty" style="margin:40px 0 80px">제품을 찾을 수 없습니다.<br>' +
+      '<a href="shop.html" style="color:var(--amber);text-decoration:underline">스토어로 돌아가기</a></p>';
+    return;
+  }
+
+  document.title = it.name + " — 오브씬 OVSCENE";
+  $("#crumbCat").textContent = it.cat;
+
+  var style = OVS.profile ? OVS.styleById(OVS.profile.style) : OVS.styleById(it.styles[0]);
+  var score = OVS.profile ? OVS.matchScore(it, OVS.profile) : 0;
+  var qty = 1;
+
+  var momentNames = it.moments.map(function (m) {
+    var mm = OVS.momentById(m);
+    return mm ? '<a href="shop.html?moment=' + mm.id + '" style="text-decoration:underline">' + mm.ko + "</a>" : "";
+  }).filter(Boolean).join(" · ");
+
+  host.innerHTML =
+    '<div class="pd">' +
+      '<div>' +
+        '<div class="pd-fig" id="pdFig">' + OVS.hero1(it.type, style, 600) + "</div>" +
+        '<div class="pd-thumbs" id="pdThumbs"></div>' +
+      "</div>" +
+      "<div>" +
+        '<span class="lbl">' + it.cat + (it.random ? " · 구성 랜덤" : "") + "</span>" +
+        '<h1 class="kh">' + it.name + "</h1>" +
+        '<p class="lead">' + it.desc + "</p>" +
+        '<div class="bigprice">' + OVS.won(it.price) + "</div>" +
+        '<p class="tiny">5만원 이상 무료배송 · 평일 오후 2시 이전 결제 시 당일 출고</p>' +
+
+        (OVS.profile
+          ? '<div class="whymatch"><h4>내 취향 매칭 ' + score + "%</h4><p>" + it.why + "</p></div>"
+          : '<div class="whymatch"><h4>왜 이 제품인가</h4><p>' + it.why +
+            ' <a href="analyze.html" style="text-decoration:underline">취향 진단</a>을 마치면 내 프로필과의 매칭도가 표시됩니다.</p></div>') +
+
+        '<dl class="spec">' +
+          Object.keys(it.spec).map(function (k) {
+            return "<div><dt>" + k + "</dt><dd>" + it.spec[k] + "</dd></div>";
+          }).join("") +
+          "<div><dt>모먼트</dt><dd>" + momentNames + "</dd></div>" +
+        "</dl>" +
+
+        '<div class="optrow">' +
+          '<span class="lbl">수량</span>' +
+          '<span class="qtybox"><button id="qm" aria-label="수량 줄이기">−</button>' +
+          '<span id="qv">1</span><button id="qp" aria-label="수량 늘리기">+</button></span>' +
+          '<span class="price" id="lineTotal">' + OVS.won(it.price) + "</span>" +
+        "</div>" +
+
+        '<div class="buyrow">' +
+          '<button class="btn btn-line btn-lg" id="addBtn">장바구니 담기</button>' +
+          '<button class="btn btn-amber btn-lg" id="buyBtn">바로 구매</button>' +
+        "</div>" +
+
+        (it.random
+          ? '<div class="notice">이 박스는 카테고리만 확정되고 개별 품목은 취향 프로필을 기준으로 무작위 선정됩니다. 제외 요청한 품목과 이미 구매한 품목은 빠집니다.</div>'
+          : "") +
+      "</div>" +
+    "</div>";
+
+  /* 썸네일 — 같은 제품의 다른 스타일로 보기 */
+  var thumbStyles = OVS.STYLES.slice(0, 4);
+  $("#pdThumbs").innerHTML = thumbStyles.map(function (s, i) {
+    return '<button data-s="' + s.id + '" aria-pressed="' + (s.id === style.id) + '" title="' + s.ko + ' 스타일로 보기">' +
+      OVS.scene([it.type], s, 200, 150, true) + "</button>";
+  }).join("");
+  $$("#pdThumbs button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var s = OVS.styleById(b.dataset.s);
+      $("#pdFig").innerHTML = OVS.hero1(it.type, s, 600);
+      $$("#pdThumbs button").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+    });
+  });
+
+  /* 수량 */
+  function setQ(n) {
+    qty = Math.max(1, Math.min(20, n));
+    $("#qv").textContent = qty;
+    $("#lineTotal").textContent = OVS.won(it.price * qty);
+  }
+  $("#qm").addEventListener("click", function () { setQ(qty - 1); });
+  $("#qp").addEventListener("click", function () { setQ(qty + 1); });
+
+  $("#addBtn").addEventListener("click", function () {
+    OVS.addToCart(it, qty);
+    OVS.toast(it.name + " " + qty + "개 담았습니다");
+  });
+  $("#buyBtn").addEventListener("click", function () {
+    OVS.addToCart(it, qty);
+    location.href = "checkout.html";
+  });
+
+  /* 같은 모먼트의 다른 제품 */
+  var rel = OVS.ALL_ITEMS.filter(function (x) {
+    return x.id !== it.id && x.moments.some(function (m) { return it.moments.indexOf(m) > -1; });
+  }).slice(0, 4);
+
+  if (rel.length) {
+    $("#relatedSec").hidden = false;
+    $("#related").innerHTML = rel.map(function (r) {
+      return '<article class="pcard"><a href="product.html?id=' + r.id + '">' +
+        '<div class="pfig">' + OVS.scene([r.type], style, 300, 225, true) + "</div></a>" +
+        '<div class="pb"><div class="cat">' + r.cat + "</div>" +
+        '<a href="product.html?id=' + r.id + '"><h3 class="kh">' + r.name + "</h3></a>" +
+        '<p class="dsc">' + r.desc + "</p>" +
+        '<div class="pfoot"><span class="price">' + OVS.won(r.price) + "</span>" +
+        '<button class="addb" data-add="' + r.id + '">담기</button></div></div></article>';
+    }).join("");
+
+    $$("#related [data-add]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var p = OVS.byId(b.dataset.add);
+        OVS.addToCart(p, 1);
+        b.textContent = "담김"; b.classList.add("ok");
+        OVS.toast(p.name + " 담았습니다");
+        setTimeout(function () { b.textContent = "담기"; b.classList.remove("ok"); }, 1200);
+      });
+    });
+  }
+})();
+</script>
+</body>
+</html>
