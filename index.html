@@ -47,7 +47,7 @@
     <div class="wrap hero-stage">
       <div class="hero-copy">
         <p class="hero-eyebrow">AI SPACE CURATION FOR ONE-PERSON LIVING</p>
-        <h1 class="ttl" id="heroTitle">오늘의 기분에 맞춰,<br>집의 장면을 바꾸세요.</h1>
+        <h1 class="ttl hero-title" id="heroTitle"><span>오늘의 기분에 맞춰,</span><span>집의 장면을 바꾸세요.</span></h1>
         <p class="hero-k kh">무엇을 살지보다 <b>어떻게 보내고 싶은지</b>부터 고르세요.</p>
         <p class="hero-p">방 사진과 취향, 지금의 상황을 바탕으로 AI가 공간 테마를 찾고, 이미 받은 물건은 뺀 비공개 테마 팩을 구성합니다.</p>
         <div class="hero-cta">
@@ -60,7 +60,7 @@
         <span>NOW PLAYING</span>
         <strong id="heroStyleName">MODERN</strong>
         <p id="heroStyleDesc">당신의 취향에 맞춰, 열기 전까지 알 수 없는 테마 팩을 준비하는 장면</p>
-        <button class="theme-link" type="button" data-open-styles>다른 공간 분위기 고르기 <b>↗</b></button>
+        <button class="theme-link" type="button" id="openThemeStudio">다른 공간 분위기 고르기 <b>↗</b></button>
       </aside>
     </div>
   </section>
@@ -70,15 +70,29 @@
       <div class="scene-head">
         <div>
           <p class="section-kicker">CHOOSE A SCENE</p>
-          <h2 class="ttl" id="momentsTitle">오늘, 집에서<br>어떤 시간을 보낼까요?</h2>
+          <h2 class="ttl section-title" id="momentsTitle"><span>오늘, 집에서</span><span>어떤 시간을 보낼까요?</span></h2>
         </div>
-        <p>원하는 시간을 고르면 AI가 그 장면에 맞는 팩을 구성합니다. 필요한 물건만은 스토어에서 따로 고를 수도 있어요.</p>
       </div>
       <div class="moments moments-rail" id="momentsRail" aria-label="상황별 공간 장면"></div>
       <div class="rail-note"><span>←</span> 옆으로 넘겨 더 많은 장면을 살펴보세요 <span>→</span></div>
     </div>
   </section>
 </main>
+
+<div class="theme-studio" id="themeStudio" aria-hidden="true">
+  <div class="theme-studio-backdrop" data-close-theme-studio></div>
+  <section class="theme-studio-dialog" role="dialog" aria-modal="true" aria-labelledby="themeStudioTitle">
+    <div class="theme-studio-head">
+      <div>
+        <p class="section-kicker">CHOOSE YOUR ROOM MOOD</p>
+        <h2 class="ttl" id="themeStudioTitle">어떤 가구의 방에서<br>시간을 보내고 싶나요?</h2>
+      </div>
+      <button class="studio-close" type="button" data-close-theme-studio aria-label="테마 선택 닫기">×</button>
+    </div>
+    <p class="theme-studio-lead">분위기를 고르면 배경과 색감이 바뀌고, 그 테마의 가구 컬렉션을 바로 볼 수 있어요.</p>
+    <div class="theme-collections" id="themeCollections" aria-label="테마별 가구 컬렉션"></div>
+  </section>
+</div>
 
 <footer>
   <div class="wrap footer-compact">
@@ -122,6 +136,25 @@
 
   $("#momentsRail").innerHTML = OVS.MOMENTS.map(momentCard).join("");
 
+  var furniture = {
+    modern: ["스틸 월 셀프", "튜브 프레임 체어", "매트 사이드 카트"],
+    vintage: ["오크 라운드 스툴", "월넛 캐비닛", "앰버 사이드 테이블"],
+    kitsch: ["래커 큐브 테이블", "컬러 라운지 체어", "그래픽 스탠드 미러"],
+    eco: ["라탄 로우 벤치", "리넨 플로어 체어", "오크 라운드 스툴"],
+    metallic: ["크롬 모듈 셀프", "알루미늄 스툴", "미러 사이드 테이블"]
+  };
+
+  $("#themeCollections").innerHTML = OVS.STYLES.map(function (style) {
+    var items = furniture[style.id].map(function (name) { return "<li>" + name + "</li>"; }).join("");
+    return '<article class="theme-collection" data-theme-card="' + style.id + '">' +
+      '<button type="button" class="theme-collection-select" data-theme-choice="' + style.id + '" aria-label="' + style.ko + ' 테마 선택">' +
+      '<span class="theme-collection-image" style="background-image:var(--theme-' + style.id + '-image)"></span>' +
+      '<span class="theme-collection-copy"><span class="theme-collection-en">' + style.en.toUpperCase() + '</span>' +
+      '<strong class="kh">' + style.ko + '</strong><span>' + style.kw + '</span></span></button>' +
+      '<div class="theme-furniture"><span>대표 가구</span><ul>' + items + '</ul>' +
+      '<a href="shop.html?style=' + style.id + '&amp;cat=가구">가구 컬렉션 보기 <b>↗</b></a></div></article>';
+  }).join("");
+
   function updateHero(style) {
     style = style || OVS.styleById(document.documentElement.getAttribute("data-style") || "modern");
     $("#heroStyleName").textContent = style.en.toUpperCase();
@@ -129,12 +162,35 @@
   }
   updateHero();
   document.addEventListener("ovs:stylechange", function (event) { updateHero(event.detail); });
-  document.addEventListener("click", function (event) {
-    if (event.target.closest("[data-open-styles]")) {
-      var trigger = $("#themeBtn");
-      if (trigger) trigger.click();
-    }
+  var studio = $("#themeStudio");
+  function openStudio() {
+    studio.setAttribute("aria-hidden", "false");
+    document.body.classList.add("studio-open");
+    var selected = OVS.getSceneStyle().id;
+    OVS.$$("[data-theme-card]").forEach(function (card) {
+      card.classList.toggle("selected", card.getAttribute("data-theme-card") === selected);
+    });
+    OVS.$(".studio-close").focus();
+  }
+  function closeStudio() {
+    studio.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("studio-open");
+  }
+  $("#openThemeStudio").addEventListener("click", openStudio);
+  $("#themeBtn").addEventListener("click", function (event) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    openStudio();
   });
+  studio.addEventListener("click", function (event) {
+    var choice = event.target.closest("[data-theme-choice]");
+    if (choice) {
+      OVS.setSceneStyle(choice.getAttribute("data-theme-choice"));
+      closeStudio();
+    }
+    if (event.target.closest("[data-close-theme-studio]")) closeStudio();
+  });
+  document.addEventListener("keydown", function (event) { if (event.key === "Escape") closeStudio(); });
 })();
 </script>
 </body>
