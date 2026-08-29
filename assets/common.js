@@ -165,6 +165,56 @@ window.OVS = window.OVS || {};
       "</svg>";
   };
 
+  /* ---------- 실제 제품 사진 ---------- */
+  var productPhotos = {
+    "globe-amber": ["globe-amber.jpg"],
+    "clip-lamp": ["clip-lamp.jpg"],
+    "woodwick": ["woodwick.jpg"],
+    "linen-mist": ["linen-mist.jpg"],
+    "linen-cushion": ["linen-cushion.jpg"],
+    "rattan-tray": ["homewares-01.jpg", "0%", "0%"],
+    "glass-2p": ["homewares-01.jpg", "100%", "0%"],
+    "matte-mug": ["homewares-01.jpg", "0%", "100%"],
+    "oak-stool": ["homewares-01.jpg", "100%", "100%"],
+    "steel-shelf": ["furniture-01.jpg", "0%", "0%"],
+    "tube-chair": ["furniture-01.jpg", "100%", "0%"],
+    "slate-side-cart": ["furniture-01.jpg", "0%", "100%"],
+    "walnut-cabinet": ["furniture-01.jpg", "100%", "100%"],
+    "amber-side-table": ["furniture-02.jpg", "0%", "0%"],
+    "lacquer-cube": ["furniture-02.jpg", "100%", "0%"],
+    "curve-lounge-chair": ["furniture-02.jpg", "0%", "100%"],
+    "graphic-mirror": ["furniture-02.jpg", "100%", "100%"],
+    "rattan-bench": ["furniture-03.jpg", "0%", "0%"],
+    "linen-floor-chair": ["furniture-03.jpg", "100%", "0%"],
+    "chrome-module-shelf": ["furniture-03.jpg", "0%", "100%"],
+    "aluminum-stool": ["furniture-03.jpg", "100%", "100%"],
+    "mirror-side-table": ["objects-01.jpg", "0%", "0%"],
+    "bud-vase": ["objects-01.jpg", "100%", "0%"],
+    "art-print": ["objects-01.jpg", "0%", "100%"],
+    "mini-speaker": ["objects-01.jpg", "100%", "100%"],
+    "essay-set": ["objects-02.jpg", "0%", "0%"],
+    "clay-planter": ["objects-02.jpg", "100%", "0%"],
+    "linen-rug": ["objects-02.jpg", "0%", "100%"],
+    "whisky-set": ["objects-02.jpg", "100%", "100%"],
+    "mood-clock": ["boxes-01.jpg", "0%", "0%"],
+    "box-rest": ["boxes-01.jpg", "100%", "0%"],
+    "box-drink": ["boxes-01.jpg", "0%", "100%"],
+    "box-month": ["boxes-01.jpg", "100%", "100%"]
+  };
+
+  OVS.productVisual = function (item) {
+    var photo = item && productPhotos[item.id];
+    if (!photo) {
+      var fallbackStyle = item && item.styles && item.styles[0] ? item.styles[0] : OVS.getSceneStyle().id;
+      return OVS.hero1(item.type, OVS.styleById(fallbackStyle), 500);
+    }
+    var source = "var(--product-photo-" + photo[0].replace(/\.jpg$/, "") + ")";
+    var sprite = photo.length > 1;
+    return '<div class="product-photo' + (sprite ? " product-photo-sprite" : "") +
+      '" role="img" aria-label="' + item.name + ' 제품 사진" style="--product-photo:' + source + ';' +
+      (sprite ? "--photo-x:" + photo[1] + ";--photo-y:" + photo[2] + ";" : "") + '"></div>';
+  };
+
   /* ---------- 장바구니 ---------- */
   OVS.cart = OVS.load("cart", []);
 
