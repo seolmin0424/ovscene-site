@@ -96,14 +96,21 @@
   var params = new URLSearchParams(location.search);
   var curMoment = params.get("moment") || "all";
   var curCat = params.get("cat") || "전체";
+  var curStyle = params.get("style") || "all";
   var curSort = OVS.profile ? "match" : "low";
   $("#sort").value = curSort;
 
-  var profStyle = OVS.profile ? OVS.styleById(OVS.profile.style) : OVS.styleById("eco");
+  var profStyle = curStyle !== "all" ? OVS.styleById(curStyle) : (OVS.profile ? OVS.styleById(OVS.profile.style) : OVS.styleById("eco"));
 
   /* ---------- 헤더 문구 ---------- */
   function head() {
-    if (curMoment === "all") {
+    if (curStyle !== "all") {
+      var selectedStyle = OVS.styleById(curStyle);
+      $("#shopKicker").textContent = "Theme furniture · " + selectedStyle.en;
+      $("#shopTitle").textContent = selectedStyle.ko + " 가구";
+      $("#shopSub").textContent = selectedStyle.kw;
+      $("#shopNote").textContent = "선택한 테마에 맞는 가구와 작은 오브제를 함께 살펴보세요.";
+    } else if (curMoment === "all") {
       $("#shopKicker").textContent = "All products";
       $("#shopTitle").textContent = "STORE";
       $("#shopSub").textContent = "필요할 때만, 원하는 것만.";
@@ -152,6 +159,7 @@
     var p = new URLSearchParams();
     if (curMoment !== "all") p.set("moment", curMoment);
     if (curCat !== "전체") p.set("cat", curCat);
+    if (curStyle !== "all") p.set("style", curStyle);
     var q = p.toString();
     history.replaceState(null, "", location.pathname + (q ? "?" + q : ""));
   }
@@ -163,6 +171,7 @@
     var list = OVS.ALL_ITEMS.filter(function (it) {
       if (curCat !== "전체" && it.cat !== curCat) return false;
       if (curMoment !== "all" && it.moments.indexOf(curMoment) < 0) return false;
+      if (curStyle !== "all" && it.styles.indexOf(curStyle) < 0) return false;
       return true;
     });
 
