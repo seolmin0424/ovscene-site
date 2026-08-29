@@ -35,23 +35,77 @@ window.OVS = window.OVS || {};
     try { localStorage.setItem("ovs-" + key, JSON.stringify(val)); } catch (e) {}
   };
 
-  /* ---------- 화면 테마 ---------- */
+  /* ---------- 공간 테마 ---------- */
   var root = document.documentElement;
-  try {
-    var st = localStorage.getItem("ovs-theme");
-    if (st) root.setAttribute("data-theme", st);
-  } catch (e) {}
+  var defaultStyle = "modern";
+  function savedStyle() {
+    try {
+      var id = localStorage.getItem("ovs-style");
+      return OVS.styleById(id).id === id ? id : defaultStyle;
+    } catch (e) { return defaultStyle; }
+  }
+  root.setAttribute("data-theme", "light");
+  root.setAttribute("data-style", savedStyle());
+
+  OVS.getSceneStyle = function () {
+    return OVS.styleById(root.getAttribute("data-style") || defaultStyle);
+  };
+  OVS.setSceneStyle = function (id) {
+    var style = OVS.styleById(id);
+    root.setAttribute("data-style", style.id);
+    try { localStorage.setItem("ovs-style", style.id); } catch (e) {}
+    var colorMeta = document.querySelector('meta[name="theme-color"]');
+    if (colorMeta) colorMeta.setAttribute("content", getComputedStyle(root).getPropertyValue("--bg").trim());
+    OVS.$$(".style-option").forEach(function (option) {
+      option.setAttribute("aria-pressed", String(option.getAttribute("data-style") === style.id));
+    });
+    OVS.$$(".style-current").forEach(function (label) { label.textContent = style.en; });
+    try { document.dispatchEvent(new CustomEvent("ovs:stylechange", { detail: style })); } catch (e) {}
+  };
 
   OVS.initThemeToggle = function () {
-    var b = OVS.$("#themeBtn");
-    if (!b) return;
-    b.addEventListener("click", function () {
-      var c = root.getAttribute("data-theme");
-      var dark = c ? c === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
-      var n = dark ? "light" : "dark";
-      root.setAttribute("data-theme", n);
-      try { localStorage.setItem("ovs-theme", n); } catch (e) {}
+    var button = OVS.$("#themeBtn");
+    if (!button || button.getAttribute("data-style-ready")) return;
+    var style = OVS.getSceneStyle();
+    button.setAttribute("data-style-ready", "true");
+    button.classList.add("style-toggle");
+    button.setAttribute("type", "button");
+    button.setAttribute("aria-expanded", "false");
+    button.setAttribute("aria-haspopup", "true");
+    button.innerHTML = '<span class="style-current">' + style.en + '</span>';
+
+    var menu = document.createElement("div");
+    menu.className = "style-popover";
+    menu.setAttribute("role", "group");
+    menu.setAttribute("aria-label", "공간 테마 선택");
+    menu.innerHTML = OVS.STYLES.map(function (item) {
+      var colors = item.c.join(",");
+      return '<button type="button" class="style-option" data-style="' + item.id + '" aria-pressed="' + (item.id === style.id) + '">' +
+        '<i style="--swatch:linear-gradient(135deg,' + colors + ')"></i><span><b>' + item.ko + '</b><span>' + item.kw + '</span></span></button>';
+    }).join("");
+    button.parentNode.appendChild(menu);
+
+    function close() {
+      menu.classList.remove("open");
+      button.setAttribute("aria-expanded", "false");
+    }
+    button.addEventListener("click", function () {
+      var isOpen = menu.classList.toggle("open");
+      button.setAttribute("aria-expanded", String(isOpen));
     });
+    menu.addEventListener("click", function (event) {
+      var option = event.target.closest("[data-style]");
+      if (!option) return;
+      OVS.setSceneStyle(option.getAttribute("data-style"));
+      close();
+    });
+    document.addEventListener("click", function (event) {
+      if (!button.parentNode.contains(event.target)) close();
+    });
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") close();
+    });
+    OVS.setSceneStyle(style.id);
   };
 
   /* ---------- 오브제 SVG ---------- */
@@ -124,8 +178,11 @@ window.OVS = window.OVS || {};
     qty = qty || 1;
     var f = null;
     for (var i = 0; i < OVS.cart.length; i++) if (OVS.cart[i].id === item.id) { f = OVS.cart[i]; break; }
-    if (f) f.qty += qty;
-    else OVS.cart.push({ id: item.id, name: item.name, price: item.price, type: item.type, cat: item.cat, qty: qty });
+    if (f) f.qty = item.isPack ? 1 : f.qty + qty;
+    else OVS.cart.push({
+      id: item.id, name: item.name, price: item.price, type: item.type, cat: item.cat, qty: qty,
+      isPack: !!item.isPack, itemIds: item.itemIds ? item.itemIds.slice() : null
+    });
     OVS.save("cart", OVS.cart);
     OVS.syncCart();
   };
@@ -159,6 +216,20 @@ window.OVS = window.OVS || {};
     return subtotal === 0 || subtotal >= 50000 ? 0 : 3000;
   };
 
+  /* ---------- 구매 이력 · 비공개 테마 팩 ---------- */
+  OVS.purchased = OVS.load("purchased", []);
+  OVS.purchasedIds = function () { return OVS.purchased.slice(); };
+  OVS.recordPurchased = function (order) {
+    var ids = OVS.purchased.slice();
+    (order || OVS.cart).forEach(function (entry) {
+      if (entry.itemIds && entry.itemIds.length) ids = ids.concat(entry.itemIds);
+      else if (OVS.byId(entry.id) && entry.cat !== "큐레이션 박스") ids.push(entry.id);
+    });
+    OVS.purchased = ids.filter(function (id, index, arr) { return arr.indexOf(id) === index; });
+    OVS.save("purchased", OVS.purchased);
+    OVS.save("pending-pack", null);
+  };
+
   /* ---------- 취향 프로필 ---------- */
   OVS.profile = OVS.load("profile", null);
   OVS.saveProfile = function (p) { OVS.profile = p; OVS.save("profile", p); };
@@ -181,6 +252,44 @@ window.OVS = window.OVS || {};
       .sort(function (a, b) { return b.s - a.s; })
       .slice(0, n || 5)
       .map(function (x) { return x.p; });
+  };
+
+  OVS.buildThemePack = function (profile, title) {
+    if (!profile) return null;
+    var used = OVS.purchasedIds();
+    var signature = [profile.style, profile.moment, used.slice().sort().join("-")].join("|");
+    var pending = OVS.load("pending-pack", null);
+    if (pending && pending.signature === signature && pending.itemIds && pending.itemIds.every(function (id) {
+      return used.indexOf(id) < 0;
+    })) return pending;
+
+    var ranked = OVS.PRODUCTS.filter(function (item) { return used.indexOf(item.id) < 0; })
+      .map(function (item) { return { item: item, score: OVS.matchScore(item, profile) + Math.random() * 14 }; })
+      .sort(function (a, b) { return b.score - a.score; });
+    if (ranked.length < 3) return null;
+
+    var chosen = [], categories = {};
+    ranked.forEach(function (entry) {
+      if (chosen.length >= 4 || categories[entry.item.cat]) return;
+      chosen.push(entry.item);
+      categories[entry.item.cat] = true;
+    });
+    ranked.forEach(function (entry) {
+      if (chosen.length >= 4 || chosen.some(function (item) { return item.id === entry.item.id; })) return;
+      chosen.push(entry.item);
+    });
+
+    var retail = chosen.reduce(function (sum, item) { return sum + item.price; }, 0);
+    var pack = {
+      id: "theme-pack-" + profile.style + "-" + profile.moment,
+      name: "AI 테마 팩 · " + (title || "이번 달의 장면"),
+      cat: "AI 테마 팩", type: "box", isPack: true,
+      price: Math.round((retail * 0.82 + 4900) / 1000) * 1000,
+      itemIds: chosen.map(function (item) { return item.id; }),
+      count: chosen.length, excludedCount: used.length, signature: signature
+    };
+    OVS.save("pending-pack", pack);
+    return pack;
   };
 
   /* ---------- 토스트 ---------- */
